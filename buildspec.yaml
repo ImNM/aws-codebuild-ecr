@@ -1,0 +1,26 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - IMAGE_NAME=“imageapi”
+      - REPOSITORY_URI=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/imnm_code_build_test
+      - IMAGE_TAG=prod_$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - echo Image_tag $IMAGE_TAG
+      - docker build -t $REPOSITORY_URI/client:latest ./client
+      - docker build -t $REPOSITORY_URI/client2:latest ./client2
+      - docker build -t $REPOSITORY_URI/client3:latest ./client3
+      - docker tag $REPOSITORY_URI/client:latest $REPOSITORY_URI/client:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI/client2:latest $REPOSITORY_URI/client2:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI/client3:latest $REPOSITORY_URI/client3:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI/client:$IMAGE_TAG
