@@ -15,16 +15,16 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - echo Image_tag $IMAGE_TAG
-      - docker build -t $REPOSITORY_URI1:latest ./client
-      - docker build -t $REPOSITORY_URI2:latest ./client2
-      - docker build -t $REPOSITORY_URI3:latest ./client3
-      - docker tag $REPOSITORY_URI1:latest $REPOSITORY_URI1/client:$IMAGE_TAG
-      - docker tag $REPOSITORY_URI2:latest $REPOSITORY_URI2/client2:$IMAGE_TAG
-      - docker tag $REPOSITORY_URI3:latest $REPOSITORY_URI3/client3:$IMAGE_TAG
+      - docker build -t $REPOSITORY_URI_CLIENT1:latest ./client
+      - docker build -t $REPOSITORY_URI_CLIENT2:latest ./client2
+      - docker build -t $REPOSITORY_URI_CLIENT3:latest ./client3
+      - docker tag $REPOSITORY_URI_CLIENT1:latest $REPOSITORY_URI_CLIENT1/client:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENT2:latest $REPOSITORY_URI_CLIENT2/client2:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENT3:latest $REPOSITORY_URI_CLIENT3/client3:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI1/client:$IMAGE_TAG
-      - docker push $REPOSITORY_URI2/client2:$IMAGE_TAG
-      - docker push $REPOSITORY_URI3/client3:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENT1/client:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENT2/client2:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENT3/client3:$IMAGE_TAG
