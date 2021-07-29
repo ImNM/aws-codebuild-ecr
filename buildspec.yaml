@@ -23,4 +23,6 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI/client:$IMAGE_TAG
+      - docker push $REPOSITORY_URI/client
+      - docker push $REPOSITORY_URI/client2
+      - docker push $REPOSITORY_URI/client3
