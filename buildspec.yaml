@@ -5,25 +5,25 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      - REPOSITORY_URI_CLIENT1=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client
-      - REPOSITORY_URI_CLIENT2=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client1
-      - REPOSITORY_URI_CLIENT3=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client2
-      - IMAGE_TAG=echo TZ='Asia/Seoul' date +"%y-%m-%d-%H.%M"
+      - REPOSITORY_URI_CLIENTONE=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client
+      - REPOSITORY_URI_CLIENTTWO=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client1
+      - REPOSITORY_URI_CLIENTTHREE=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client2
+      - IMAGE_TAG=echo TZ='Asia/Seoul' date +"%y%m%d-%H.%M"
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - echo Image_tag $IMAGE_TAG
-      - docker build -t $REPOSITORY_URI_CLIENT1:latest ./client
-      - docker build -t $REPOSITORY_URI_CLIENT2:latest ./client2
-      - docker build -t $REPOSITORY_URI_CLIENT3:latest ./client3
-      - docker tag $REPOSITORY_URI_CLIENT1:latest $REPOSITORY_URI_CLIENT1:$IMAGE_TAG
-      - docker tag $REPOSITORY_URI_CLIENT2:latest $REPOSITORY_URI_CLIENT2:$IMAGE_TAG
-      - docker tag $REPOSITORY_URI_CLIENT3:latest $REPOSITORY_URI_CLIENT3:$IMAGE_TAG
+      - docker build -t $REPOSITORY_URI_CLIENTONE:latest ./client
+      - docker build -t $REPOSITORY_URI_CLIENTTWO:latest ./client2
+      - docker build -t $REPOSITORY_URI_CLIENTTHREE:latest ./client3
+      - docker tag $REPOSITORY_URI_CLIENTONE:latest $REPOSITORY_URI_CLIENTONE:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENTTWO:latest $REPOSITORY_URI_CLIENTTWO:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENTTHREE:latest $REPOSITORY_URI_CLIENTTHREE:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI_CLIENT1:$IMAGE_TAG
-      - docker push $REPOSITORY_URI_CLIENT2:$IMAGE_TAG
-      - docker push $REPOSITORY_URI_CLIENT3:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENTONE:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENTTWO:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENTTHREE:$IMAGE_TAG
