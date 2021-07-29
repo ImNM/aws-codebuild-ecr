@@ -7,8 +7,8 @@ phases:
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - IMAGE_NAME=“imageapi”
       - REPOSITORY_URI_CLIENT1=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client
-      - REPOSITORY_URI_CLIENT2=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client
-      - REPOSITORY_URI_CLIENT3=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client
+      - REPOSITORY_URI_CLIENT2=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client2
+      - REPOSITORY_URI_CLIENT3=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client3
       - IMAGE_TAG=prod_$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
@@ -18,13 +18,13 @@ phases:
       - docker build -t $REPOSITORY_URI_CLIENT1:latest ./client
       - docker build -t $REPOSITORY_URI_CLIENT2:latest ./client2
       - docker build -t $REPOSITORY_URI_CLIENT3:latest ./client3
-      - docker tag $REPOSITORY_URI_CLIENT1:latest $REPOSITORY_URI_CLIENT1/client:$IMAGE_TAG
-      - docker tag $REPOSITORY_URI_CLIENT2:latest $REPOSITORY_URI_CLIENT2/client2:$IMAGE_TAG
-      - docker tag $REPOSITORY_URI_CLIENT3:latest $REPOSITORY_URI_CLIENT3/client3:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENT1:latest $REPOSITORY_URI_CLIENT1:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENT2:latest $REPOSITORY_URI_CLIENT2:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_CLIENT3:latest $REPOSITORY_URI_CLIENT3:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI_CLIENT1/client:$IMAGE_TAG
-      - docker push $REPOSITORY_URI_CLIENT2/client2:$IMAGE_TAG
-      - docker push $REPOSITORY_URI_CLIENT3/client3:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENT1:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENT2:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_CLIENT3:$IMAGE_TAG
