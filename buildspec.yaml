@@ -9,6 +9,8 @@ phases:
       - REPOSITORY_URI_CLIENTTWO=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client1
       - REPOSITORY_URI_CLIENTTHREE=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client2
       - IMAGE_TAG=$(TZ='Asia/Seoul' date +"%y%m%d-%H%M")
+      - echo $SLACKURI
+      - curl -X POST --data-urlencode "payload={\"channel\": \"#알림\", \"username\": \"webhookbot\", \"text\": \"도커 이미지 태그 $va \", \"icon_emoji\": \":ghost:\"}" $SLACKURI
   build:
     commands:
       - echo Build started on `date`
