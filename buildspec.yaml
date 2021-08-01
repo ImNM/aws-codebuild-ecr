@@ -8,6 +8,7 @@ phases:
       - REPOSITORY_URI_CLIENTONE=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client
       - REPOSITORY_URI_CLIENTTWO=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client1
       - REPOSITORY_URI_CLIENTTHREE=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/client2
+      - FLUENTD_URI=135487423365.dkr.ecr.ap-northeast-2.amazonaws.com/fluentd
       - IMAGE_TAG=$(TZ='Asia/Seoul' date +"%y%m%d-%H%M")
       - curl -X POST --data-urlencode "payload={\"channel\":\"#알림\", \"username\":\"webhookbot\", \"text\":\"도커 이미지 태그 $IMAGE_TAG \", \"icon_emoji\":\":ghost:\"}" $SLACKURI
   build:
@@ -18,9 +19,11 @@ phases:
       - docker build -t $REPOSITORY_URI_CLIENTONE:latest ./client
       - docker build -t $REPOSITORY_URI_CLIENTTWO:latest ./client2
       - docker build -t $REPOSITORY_URI_CLIENTTHREE:latest ./client3
+      - docker build -t $FLUENTD_URI:latest ./fluentd-efk-image
       - docker tag $REPOSITORY_URI_CLIENTONE:latest $REPOSITORY_URI_CLIENTONE:$IMAGE_TAG
       - docker tag $REPOSITORY_URI_CLIENTTWO:latest $REPOSITORY_URI_CLIENTTWO:$IMAGE_TAG
       - docker tag $REPOSITORY_URI_CLIENTTHREE:latest $REPOSITORY_URI_CLIENTTHREE:$IMAGE_TAG
+      - docker tag $FLUENTD_URI:latest $FLUENTD_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
@@ -28,3 +31,4 @@ phases:
       - docker push $REPOSITORY_URI_CLIENTONE:$IMAGE_TAG
       - docker push $REPOSITORY_URI_CLIENTTWO:$IMAGE_TAG
       - docker push $REPOSITORY_URI_CLIENTTHREE:$IMAGE_TAG
+      - docker push $FLUENTD_URI:$IMAGE_TAG
